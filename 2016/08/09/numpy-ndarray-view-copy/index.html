@@ -4,17 +4,26 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>PersonalBlog</title>
+  <title>numpy ndarray类型中view/copy | PersonalBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="PersonalBlog">
-<meta property="og:url" content="http://tvect.cc/index.html">
+  <meta name="description" content="在numpy的reshape和ravel函数说明中指出在必要时会返回对象的拷贝。numpy.reshape()中指出：
+This will be a new view object if possible; otherwise, it will be a copy.  
+Note there is no guarantee of the *memory layout* (C- or Fortran">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy ndarray类型中view/copy">
+<meta property="og:url" content="http://tvect.cc/2016/08/09/numpy-ndarray-view-copy/index.html">
 <meta property="og:site_name" content="PersonalBlog">
-<meta property="og:description">
+<meta property="og:description" content="在numpy的reshape和ravel函数说明中指出在必要时会返回对象的拷贝。numpy.reshape()中指出：
+This will be a new view object if possible; otherwise, it will be a copy.  
+Note there is no guarantee of the *memory layout* (C- or Fortran">
+<meta property="og:image" content="http://obn75nm65.bkt.clouddn.com/ndarry-memory.png">
+<meta property="og:updated_time" content="2016-08-09T13:03:57.658Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PersonalBlog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="numpy ndarray类型中view/copy">
+<meta name="twitter:description" content="在numpy的reshape和ravel函数说明中指出在必要时会返回对象的拷贝。numpy.reshape()中指出：
+This will be a new view object if possible; otherwise, it will be a copy.  
+Note there is no guarantee of the *memory layout* (C- or Fortran">
+<meta name="twitter:image" content="http://obn75nm65.bkt.clouddn.com/ndarry-memory.png">
   
     <link rel="alternative" href="/atom.xml" title="PersonalBlog" type="application/atom+xml">
   
@@ -200,9 +209,7 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
-  
-    <article id="post-numpy-ndarray-view-copy" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-numpy-ndarray-view-copy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2016/08/09/numpy-ndarray-view-copy/" class="article-date">
@@ -218,12 +225,19 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/09/numpy-ndarray-view-copy/">numpy ndarray类型中view/copy</a>
+    <h1 class="article-title" itemprop="name">
+      numpy ndarray类型中view/copy
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -256,217 +270,67 @@ Note that this behavior is different from a.resize(new_shape) which fills with z
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/07/24/numpy-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">numpy_1</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
 
 
 
-
-  
-    <article id="post-numpy-1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/24/numpy-1/" class="article-date">
-  	<time datetime="2016-07-24T00:26:30.000Z" itemprop="datePublished">7月 24 2016</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/24/numpy-1/">numpy_1</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>[TOC]</p>
-<h1 id="NumPy数组对象"><a href="#NumPy数组对象" class="headerlink" title="NumPy数组对象"></a>NumPy数组对象</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>NumPy中的ndarray是一个多维数组对象，该对象由两部分组成：<br>    实际的数据；<br>    描述这些数据的元数据。<br>大部分的数组操作仅仅修改元数据部分，而不改变底层的实际数据。</p>
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>NumPy数组在数值运算方面的效率优于Python提供的list容器。<br>使用NumPy可以在代码中省去很多循环语句，因此其代码比等价的Python代码更为简洁。</p>
-<h1 id="创建多维数组"><a href="#创建多维数组" class="headerlink" title="创建多维数组"></a>创建多维数组</h1><p>numpy.array([numpy.arange(2), numpy.arange(2)])</p>
-<h1 id="自定义数据类型"><a href="#自定义数据类型" class="headerlink" title="自定义数据类型"></a>自定义数据类型</h1><p>numpy.dtype([(,name’, str_, 40), (‘numitems’, int32), (‘price’,float32)])</p>
-<h1 id="数组的切片和索引"><a href="#数组的切片和索引" class="headerlink" title="数组的切片和索引"></a>数组的切片和索引</h1><p>numpy.arange(24).reshape((2,3,4))[0,…]</p>
-<h3 id="Tips-…"><a href="#Tips-…" class="headerlink" title="Tips: …"></a>Tips: …</h3><pre><code>多个冒号可以用一个省略号...来代替,表示遍历剩下的维度
-</code></pre><h1 id="改变数组的维度"><a href="#改变数组的维度" class="headerlink" title="改变数组的维度"></a>改变数组的维度</h1><h2 id="reshape-x-y"><a href="#reshape-x-y" class="headerlink" title=".reshape((x, y))"></a>.reshape((x, y))</h2><h2 id="用元组设置维度"><a href="#用元组设置维度" class="headerlink" title="用元组设置维度"></a>用元组设置维度</h2><p>b.shape = (2, 3)</p>
-<h2 id="resize-x-y"><a href="#resize-x-y" class="headerlink" title=".resize((x, y))"></a>.resize((x, y))</h2><p>和reshape函数的功能一样，但resize会直接修改所操作的数组</p>
-<h2 id="transponse"><a href="#transponse" class="headerlink" title=".transponse()"></a>.transponse()</h2><h2 id="展平操作"><a href="#展平操作" class="headerlink" title="展平操作"></a>展平操作</h2><pre><code>.ravel(): return a view of the original array
-.flatten(): return a copy of the original array
-</code></pre><h3 id="Tips-ravel-amp-flatten"><a href="#Tips-ravel-amp-flatten" class="headerlink" title="Tips: ravel &amp; flatten"></a>Tips: ravel &amp; flatten</h3><pre><code>The difference is that flatten always returns a copy and ravel returns a view of the original array whenever possible. This isn&apos;t visible in the printed output, but if you modify  the array returned by ravel, it may modify the entries in the original array. If you modify the entries in an array returned from flatten this will never happen. ravel will often be faster since no memory is copied, but you have to be more careful about modifying the array it returns.
-</code></pre><h1 id="数组的组合"><a href="#数组的组合" class="headerlink" title="数组的组合"></a>数组的组合</h1><p>水平组合：np.hstack()<br>垂直组合：np.vstack()<br>深度组合：np.dstack()<br>列组合：np.column_stack()    而对于二维数组, column_stack与hstack的效果是相同的<br>行组合：np.row_stack()    对于二维数组, row_stack与vstack的效果是相同的<br>连接函数：np.concatenate((a1, a2, …), axis=0)    可以用concatenate实现hstack, vstack类似的效果</p>
-<h1 id="数组的分割"><a href="#数组的分割" class="headerlink" title="数组的分割"></a>数组的分割</h1><p>水平分割：np.hsplit()<br>垂直分割：np.vsplit()<br>深度分割：np.dsplit()<br>split函数：numpy.split(ary, indices_or_sections, axis=0)</p>
-<h1 id="数组的属性"><a href="#数组的属性" class="headerlink" title="数组的属性"></a>数组的属性</h1><p>shape属性<br>dtype属性<br>ndim属性：数组的维数<br>size属性：数组中元素的总个数<br>itemsize属性：数组中每个元素在内存中所占的字节数<br>nbytes属性：整个数组所占用的存储空间，即为itemsize*size<br>T属性：数组的转置，对于一维数组，其T属性就是原数组<br>real属性：给出复数数组的实部<br>imag属性：给出复数数组的虚部<br>flat属性：</p>
-<pre><code>flat属性将返回一个numpy.flatiter对象，这是获得flatiter对象的唯一方式——我们无法访问flatiter的构造函数。
-这个所谓的“扁平迭代器”可以让我们像遍历一维数组一样去遍历任意的多维数组。
-可以用flatiter对象直接获取一个或多个数组元素。
-flat属性是一个可赋值的属性。对flat属性赋值将导致整个数组的元素都被覆盖。
-</code></pre><h1 id="数组的转换"><a href="#数组的转换" class="headerlink" title="数组的转换"></a>数组的转换</h1><p>.tolist()：转换成列表<br>.astype()：在转换数组时可以指定类型</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="numpy-ndarray-view-copy" data-title="numpy ndarray类型中view/copy" data-url="http://tvect.cc/2016/08/09/numpy-ndarray-view-copy/"></div></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"tvect"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
 
-
-
-
-
-
-
-  
-    <article id="post-process" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/28/process/" class="article-date">
-  	<time datetime="2016-06-28T14:05:06.307Z" itemprop="datePublished">6月 28 2016</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/28/process/">multiprocessing</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>###Pipe: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">link</a><br>The Pipe() function returns a pair of connection objects connected by a pipe which by default is duplex (two-way). For example:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Pipe</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(conn)</span>:</span></span><br><span class="line">    conn.send([<span class="number">42</span>, <span class="keyword">None</span>, <span class="string">'hello'</span>])</span><br><span class="line">    conn.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    parent_conn, child_conn = Pipe()</span><br><span class="line">    p = Process(target=f, args=(child_conn,))</span><br><span class="line">    p.start()</span><br><span class="line">    <span class="keyword">print</span> parent_conn.recv()   <span class="comment"># prints "[42, None, 'hello']"</span></span><br><span class="line">    p.join()</span><br></pre></td></tr></table></figure>
-<p>The two connection objects returned by Pipe() represent the two ends of the pipe. Each connection object has send() and recv() methods (among others). Note that data in a pipe may become corrupted if two processes (or threads) try to read from or write to the same end of the pipe at the same time. Of course there is no risk of corruption from processes using different ends of the pipe at the same time.</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/25/hello-world/" class="article-date">
-  	<time datetime="2016-06-25T04:56:36.203Z" itemprop="datePublished">6月 25 2016</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/25/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-  
 </div>
       <footer id="footer">
   <div class="outer">
@@ -490,8 +354,8 @@ flat属性是一个可赋值的属性。对flat属性赋值将导致整个数组
 		fancybox: true,
 		mathjax: true,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
