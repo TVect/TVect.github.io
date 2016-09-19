@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>PersonalBlog</title>
@@ -21,11 +21,11 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
-  <div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -79,7 +79,7 @@
 						<li>Links</li>
 						
 						
-						<li>About</li>
+						<li>Über</li>
 						
 					</ul>
 				</div>
@@ -201,6 +201,86 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-cache-alg" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/06/cache-alg/" class="article-date">
+  	<time datetime="2016-09-05T22:47:49.000Z" itemprop="datePublished">9月 6 2016</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/06/cache-alg/">缓存替换策略对比测试</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<p>缓存替换策略对比测试<br>下面首先将Greedy-Dual Size和几种常见的缓存替换策略进行了对比，参与对比的缓存策略有：<br>RandomDiscard: 随机替换<br>    FirstInFirstOut: 先进先出<br>    LeastRecentlyUsed(LRU): 最近最少使用置换算法,也就是首先淘汰最长时间未被使用的项<br>    LeastFrequentlyUsed(LFU): 最近最不常用置换算法,也就是淘汰一定时期内被访问次数最少的项<br>之后，也对Greedy-Dual Size中不同的priority计算方式进行了效果测试。</p>
+<h1 id="Greedy-Dual-Size简介："><a href="#Greedy-Dual-Size简介：" class="headerlink" title="Greedy-Dual Size简介："></a>Greedy-Dual Size简介：</h1><p>传统的cache替换，像CPU caches和Virtual Memory处理的都是缓存项大小一致的情况，在我们的场景中，我们要缓存的数据大小是会在很大的范围内变化的，从下面的实验数据中可以看到，我们要缓存的数据尺寸大部分集中在1M，2M以下，但是也会出现几百兆大小的文件。</p>
+<p>RandomDiscard，FirstInFirstOut，LeastRecentlyUsed(LRU)，LeastFrequentlyUsed(LFU)，乃至GD算法中都没有考虑到size的影响。</p>
+<p>在Greedy-Dual算法中，给每个缓存项赋予权重priority=clock + cost。<br>在Greedy-Dual Size算法的原始形式中，给每个缓存项赋予权重priority=clock+cost/size。<br>其中clock用来控制衰老，cost表示获取文件的代价，size表示文件的大小。<br>从Greedy-Dual和Greedy-Dual Size中对priority的不同赋值，可以看出，Greedy-Dual试图贪婪地使得缓存的每一项价值足够大，而Greedy-Dual Size则试图使得缓存的每一个字节的价值足够大。<br>所以，直观上感觉，在限定缓存字节上限的情况下，Greedy-Dual Size会比Greedy-Dual表现的更好。</p>
+<h2 id="Greedy-Dual-Size基本步骤："><a href="#Greedy-Dual-Size基本步骤：" class="headerlink" title="Greedy-Dual Size基本步骤："></a>Greedy-Dual Size基本步骤：</h2><p>在本Greedy-Dual Size算法中，缓存权重计算公式设置为 $ P\left ( f \right ) = Clock + F \times \frac{Cost\left ( f \right )}{Size\left ( f \right )} $</p>
+<p>其基本步骤如下：</p>
+<ol>
+<li>如果请求的file在cache中：<br>更新file访问次数 $F\left ( f \right ) = F \left ( f \right ) + 1$<br>更新file缓存权重，并将其权重重新更新到优先级队列中</li>
+<li><p>如果请求的file不在cache中，需要从来源去取file，并<br>设置file的访问次数为 $F\left ( f \right ) = 1 $<br>计算file的权重，并将其权重插入到优先级队列中<br>更新cache使用情况： $Used = Used + Size\left ( f \right )$<br>2.1. 如果 $Used \leqslant Limit$ :<br>表明有足够的缓存空间，将file放到缓存中<br>2.2. 如果 $Used &gt; Limit$ :<br>从优先级队列中选择优先级最低的k个文件, 使得 $UsedEstimate \leqslant Limit$ , 其中<br>$$UsedEstimate = Used - \sum Size\left ( f{i} \right )$$<br> 2.2.1. 如果选取的k个文件中包含了file：<br> file不应该被缓存，从优先队列中剔除file相对应的权重<br> 2.2.2. 如果选择的k个文件中不包含file：<br> 更新 $Clock = max P\left ( f_{i} \right )$</p>
+<p> 更新 $Used = Used - \sum Size\left ( f_{i} \right )$</p>
+<p> 其中 $i \leq k$</p>
+<p> 从缓存中移除折k个文件，并从优先队列中剔除这些被移除的文件的权重</p>
+<p> 把file放到缓存中</p>
+</li>
+</ol>
+<h1 id="实验介绍"><a href="#实验介绍" class="headerlink" title="实验介绍"></a>实验介绍</h1><p>在以下实验中，用limit_size表示测试环境中缓存字节数的上限。<br>使用了hit_percent和byte_hit_percent来比较不同算法，不同参数下的表现好坏。<br>hit_percent: 缓存命中比率，即为cache命中数除以数据请求总次数<br>byte_hit_percent: 字节缓存命中比率，即为cache命中的字节数除以总的请求的字节数</p>
+<h2 id="实验基本数据："><a href="#实验基本数据：" class="headerlink" title="实验基本数据："></a>实验基本数据：</h2><p>实验中涉及到的数据包括：真实的每一套设计，每一套设计中包含的模型，每一个模型的大小。<br>实验数据均来源于真实环境，每次实验中可能会根据需要打乱设计的次序。</p>
+<p>在实验数据中，模型size大小的分布情况图如下：<br><img src="http://obn75nm65.bkt.clouddn.com/model_size.png" alt="Alt text"></p>
+<p>再将尺寸大小的数据用箱线图展示一下，如下图，下面的为放大后的局部图。<br><img src="http://obn75nm65.bkt.clouddn.com/model_size_1.png" alt="Alt text"><br><img src="http://obn75nm65.bkt.clouddn.com/model_size_2.png" alt="Alt text"><br>从上面的箱线图可以得到，平均值大约为5M，中位数大约为2M，上四分位数大约为7.5M，下四分位数大约为450K，上边缘大约为17.5M。<br>可是为什么箱线图告诉我会有这么多异常点？？？</p>
+<p>在实验数据中，每个设计案例中含有的模型个数分布如下：<br><img src="http://obn75nm65.bkt.clouddn.com/model_dis.png" alt="Alt text"><br>同样也对每套设计中包括的模型数进行箱线图展现，结果如下所示，下面的是局部放大之后的图。<br><img src="http://obn75nm65.bkt.clouddn.com/model_dis_1.png" alt="Alt text"><br><img src="http://obn75nm65.bkt.clouddn.com/model_dis_2.png" alt="Alt text"><br>从下面的箱线图中可以得到，设计中含有的模型数量的平均值大约为29，中位数大约为23，上四分卫数大约为39，下四分位数大约为11，上边缘值大约为81，下边缘值大约为1。<br>不过还是感觉有很多异常值。</p>
+<h2 id="实验一：测试以上几种算法在不同的limit-size情况下，缓存命中率，缓存字节命中率的差别"><a href="#实验一：测试以上几种算法在不同的limit-size情况下，缓存命中率，缓存字节命中率的差别" class="headerlink" title="实验一：测试以上几种算法在不同的limit_size情况下，缓存命中率，缓存字节命中率的差别"></a>实验一：测试以上几种算法在不同的limit_size情况下，缓存命中率，缓存字节命中率的差别</h2><p>实验环境：<br>总的请求个数为269962<br>去重后的请求个数为：8725<br>总的请求数据字节总数为：1 065 274 095 532byte，约为1TB<br>去重后的数据字节总数为：46 420 192 764byte，约为43.23GB<br>实验结果：<br>五种缓存替换算法，在不同的limit_size下，对应的缓存命中率hit_percent图示如下：<br><img src="http://obn75nm65.bkt.clouddn.com/hit-limit.png" alt="Alt text"></p>
+<p>五种缓存替换算法，在不同的limit_size下，对应的字节缓存命中率byte_hit_percent图示如下：<br><img src="http://obn75nm65.bkt.clouddn.com/bytehit-limit.png" alt="Alt text"><br>实验结论：<br>通过以上两幅图，<br>横向来看，随着limit_size的增大，不同算法的两种命中率都有相应的提高。<br>纵向来看，GDS基本要优于LFU和LRU，而LFU和LRU又比Random和FIFO效果要好。</p>
+<h2 id="实验二：测试GDS算法中，缓存项的不同priority计算方案对结果的影响"><a href="#实验二：测试GDS算法中，缓存项的不同priority计算方案对结果的影响" class="headerlink" title="实验二：测试GDS算法中，缓存项的不同priority计算方案对结果的影响"></a>实验二：测试GDS算法中，缓存项的不同priority计算方案对结果的影响</h2><p>实验中涉及到的priority计算方案有以下几种：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_1</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_2</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">2</span> + size/<span class="number">536</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_3</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost / math.log(size)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_4</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">2</span> + size/<span class="number">536</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost / math.log(size)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_5</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost/float(size)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_priority_6</span><span class="params">(clock, freq, size)</span>:</span></span><br><span class="line">    cost = <span class="number">2</span> + size/<span class="number">536</span></span><br><span class="line">    <span class="keyword">return</span> clock + freq * cost/float(size)</span><br></pre></td></tr></table></figure></p>
+<p>结果统计：<br><img src="http://obn75nm65.bkt.clouddn.com/priority-hit.png" alt="Alt text"><br><img src="http://obn75nm65.bkt.clouddn.com/priority-bytehit.png" alt="Alt text"></p>
+<p>结果分析：<br>从hit_percent来看，method4和method2缓存命中率最低，从计算公式可以看到，这两种计算方法都比较倾向于缓存size较大的数据项，从而导致了在limit_size的限制下，缓存的数据项数目会比较少，导致缓存命中率较低。method5的缓存命中率最高，因为method5中倾向于缓存size较小的数据，导致缓存项会比较多，缓存命中率会相对比较高。<br><img src="http://obn75nm65.bkt.clouddn.com/priority-bytehit_detail.png" alt="Alt text"></p>
+<p>从上边这张对 byte_hit_precent 进行放大的图中来看，<br>method5，method4，method2 相对于其他三种效果较差。</p>
+<h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>《Improving WWW proxies performance with Greedy-Dual-Size-Frequency caching policy》Ludmila Cherkasova<br>《基于WEB代理的访问控制网关系统研究与实现》张鑫<br>《Web缓冲存储器算法Greedy DualSize的分析与改进》杨相生</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-numpy-ndarray-view-copy" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -527,6 +607,23 @@ MathJax.Hub.Queue(function() {
 </script>
 
 
-  </div>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>
