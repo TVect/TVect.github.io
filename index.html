@@ -230,10 +230,12 @@
       
         <p>[TOC]</p>
 <p>下面整理了一些spark几种模式的配置信息与基本命令</p>
-<h2 id="local单机模式"><a href="#local单机模式" class="headerlink" title="====== local单机模式 ======"></a>====== local单机模式 ======</h2><p>结果xshell可见：</p>
+<p><br></p>
+<h1 id="local单机模式"><a href="#local单机模式" class="headerlink" title="====== local单机模式 ======"></a>====== local单机模式 ======</h1><p>结果xshell可见：</p>
 <pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master local[1] 
 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
-</code></pre><h2 id="standalone集群模式"><a href="#standalone集群模式" class="headerlink" title="====== standalone集群模式 ======"></a>====== standalone集群模式 ======</h2><h4 id="需要的配置项"><a href="#需要的配置项" class="headerlink" title="需要的配置项"></a>需要的配置项</h4><p>1.slaves文件</p>
+</code></pre><p><br></p>
+<h1 id="standalone集群模式"><a href="#standalone集群模式" class="headerlink" title="====== standalone集群模式 ======"></a>====== standalone集群模式 ======</h1><h2 id="需要的配置项"><a href="#需要的配置项" class="headerlink" title="需要的配置项"></a>需要的配置项</h2><p>1.slaves文件</p>
 <pre><code>#localhost
 node02
 node03
@@ -246,11 +248,15 @@ export SPARK_WORKER_INSTANCES=1
 export SPARK_WORKER_MEMORY=1g
 </code></pre><p>3.启动standalone集群</p>
 <pre><code>sbin/start-all.sh
-</code></pre><h4 id="standalone集群模式提交命令："><a href="#standalone集群模式提交命令：" class="headerlink" title="standalone集群模式提交命令："></a>standalone集群模式提交命令：</h4><h6 id="standalone集群模式之client模式："><a href="#standalone集群模式之client模式：" class="headerlink" title="standalone集群模式之client模式："></a>standalone集群模式之client模式：</h6><p>结果xshell可见：</p>
+</code></pre><p><br></p>
+<h2 id="standalone集群模式提交命令："><a href="#standalone集群模式提交命令：" class="headerlink" title="standalone集群模式提交命令："></a>standalone集群模式提交命令：</h2><p>1.standalone集群模式之client模式：</p>
+<p>结果xshell可见：</p>
 <pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://node01:7077 --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
-</code></pre><h6 id="standalone集群模式之cluster模式："><a href="#standalone集群模式之cluster模式：" class="headerlink" title="standalone集群模式之cluster模式："></a>standalone集群模式之cluster模式：</h6><p>结果node01:8080里面可见！</p>
+</code></pre><p>2.standalone集群模式之cluster模式：</p>
+<p>结果node01:8080里面可见！</p>
 <pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://node01:7077 --deploy-mode cluster --supervise --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
-</code></pre><h2 id="Yarn集群模式"><a href="#Yarn集群模式" class="headerlink" title="====== Yarn集群模式 ======"></a>====== Yarn集群模式 ======</h2><h4 id="需要的配置项-1"><a href="#需要的配置项-1" class="headerlink" title="需要的配置项"></a>需要的配置项</h4><p>1.spark-env.sh</p>
+</code></pre><p><br></p>
+<h1 id="Yarn集群模式"><a href="#Yarn集群模式" class="headerlink" title="====== Yarn集群模式 ======"></a>====== Yarn集群模式 ======</h1><h2 id="需要的配置项-1"><a href="#需要的配置项-1" class="headerlink" title="需要的配置项"></a>需要的配置项</h2><p>1.spark-env.sh</p>
 <pre><code>export HADOOP_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 export SPARK_HOME=/usr/hadoopsoft/spark-1.3.1-bin-hadoop2.4
@@ -261,9 +267,12 @@ export PATH=$SPARK_HOME/bin:$PATH
 <p>启动hadoo集群 start-all.sh </p>
 <p>查看node01:50070</p>
 <p>查看node01:8088</p>
-<h4 id="Yarn集群模式提交命令："><a href="#Yarn集群模式提交命令：" class="headerlink" title="Yarn集群模式提交命令："></a>Yarn集群模式提交命令：</h4><h6 id="Yarn集群模式之client模式："><a href="#Yarn集群模式之client模式：" class="headerlink" title="Yarn集群模式之client模式："></a>Yarn集群模式之client模式：</h6><p>结果xshell可见：</p>
+<p><br></p>
+<h2 id="Yarn集群模式提交命令："><a href="#Yarn集群模式提交命令：" class="headerlink" title="Yarn集群模式提交命令："></a>Yarn集群模式提交命令：</h2><p>1.Yarn集群模式之client模式：</p>
+<p>结果xshell可见：</p>
 <pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-client --executor-memory 1G --num-executors 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
-</code></pre><h6 id="Yarn集群模式之cluster模式："><a href="#Yarn集群模式之cluster模式：" class="headerlink" title="Yarn集群模式之cluster模式："></a>Yarn集群模式之cluster模式：</h6><p>结果node01:8088里面可见！</p>
+</code></pre><p>2.Yarn集群模式之cluster模式：</p>
+<p>结果node01:8088里面可见！</p>
 <pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster --executor-memory 1G --num-executors 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
 </code></pre>
       
