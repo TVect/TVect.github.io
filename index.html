@@ -202,6 +202,95 @@
 
       <div class="body-wrap">
   
+    <article id="post-spark-commands" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/29/spark-commands/" class="article-date">
+  	<time datetime="2017-05-28T16:01:27.000Z" itemprop="datePublished">5月 29 2017</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/29/spark-commands/">spark几种模式的配置与基本命令</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<p>下面整理了一些spark几种模式的配置信息与基本命令</p>
+<h2 id="local单机模式"><a href="#local单机模式" class="headerlink" title="====== local单机模式 ======"></a>====== local单机模式 ======</h2><p>结果xshell可见：</p>
+<pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master local[1] 
+./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+</code></pre><h2 id="standalone集群模式"><a href="#standalone集群模式" class="headerlink" title="====== standalone集群模式 ======"></a>====== standalone集群模式 ======</h2><h4 id="需要的配置项"><a href="#需要的配置项" class="headerlink" title="需要的配置项"></a>需要的配置项</h4><p>1.slaves文件</p>
+<pre><code>#localhost
+node02
+node03
+</code></pre><p>2.spark-env.sh</p>
+<pre><code>export JAVA_HOME=/usr/soft/jdk1.7.0_71
+export SPARK_MASTER_IP=node01
+export SPARK_MASTER_PORT=7077
+export SPARK_WORKER_CORES=1
+export SPARK_WORKER_INSTANCES=1
+export SPARK_WORKER_MEMORY=1g
+</code></pre><p>3.启动standalone集群</p>
+<pre><code>sbin/start-all.sh
+</code></pre><h4 id="standalone集群模式提交命令："><a href="#standalone集群模式提交命令：" class="headerlink" title="standalone集群模式提交命令："></a>standalone集群模式提交命令：</h4><h6 id="standalone集群模式之client模式："><a href="#standalone集群模式之client模式：" class="headerlink" title="standalone集群模式之client模式："></a>standalone集群模式之client模式：</h6><p>结果xshell可见：</p>
+<pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://node01:7077 --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+</code></pre><h6 id="standalone集群模式之cluster模式："><a href="#standalone集群模式之cluster模式：" class="headerlink" title="standalone集群模式之cluster模式："></a>standalone集群模式之cluster模式：</h6><p>结果node01:8080里面可见！</p>
+<pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://node01:7077 --deploy-mode cluster --supervise --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+</code></pre><h2 id="Yarn集群模式"><a href="#Yarn集群模式" class="headerlink" title="====== Yarn集群模式 ======"></a>====== Yarn集群模式 ======</h2><h4 id="需要的配置项-1"><a href="#需要的配置项-1" class="headerlink" title="需要的配置项"></a>需要的配置项</h4><p>1.spark-env.sh</p>
+<pre><code>export HADOOP_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
+export SPARK_HOME=/usr/hadoopsoft/spark-1.3.1-bin-hadoop2.4
+export SPARK_JAR=/usr/hadoopsoft/spark-1.3.1-bin-hadoop2.4/lib/spark-assembly-1.3.1-hadoop2.4.0.jar
+export PATH=$SPARK_HOME/bin:$PATH
+</code></pre><p>2.~/.bash_profile</p>
+<p>配置好hadoop环境变量</p>
+<p>启动hadoo集群 start-all.sh </p>
+<p>查看node01:50070</p>
+<p>查看node01:8088</p>
+<h4 id="Yarn集群模式提交命令："><a href="#Yarn集群模式提交命令：" class="headerlink" title="Yarn集群模式提交命令："></a>Yarn集群模式提交命令：</h4><h6 id="Yarn集群模式之client模式："><a href="#Yarn集群模式之client模式：" class="headerlink" title="Yarn集群模式之client模式："></a>Yarn集群模式之client模式：</h6><p>结果xshell可见：</p>
+<pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-client --executor-memory 1G --num-executors 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+</code></pre><h6 id="Yarn集群模式之cluster模式："><a href="#Yarn集群模式之cluster模式：" class="headerlink" title="Yarn集群模式之cluster模式："></a>Yarn集群模式之cluster模式：</h6><p>结果node01:8088里面可见！</p>
+<pre><code>./bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster --executor-memory 1G --num-executors 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-cache-alg" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -552,7 +641,7 @@ flat属性是一个可赋值的属性。对flat属性赋值将导致整个数组
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2016 Vect
+    		&copy; 2017 Vect
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
